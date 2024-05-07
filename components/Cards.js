@@ -38,7 +38,6 @@ const Cards = () => {
             <p className="text-xs bg-purple-400 text-purple-950 p-1 px-2 rounded-full">
               {todo.type}
             </p>
-
             <div className="flex items-center gap-4">
               <input type="checkbox" />
               <MdModeEdit />
