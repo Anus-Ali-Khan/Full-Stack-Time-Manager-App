@@ -1,9 +1,12 @@
 import React from "react";
 import { MdModeEdit } from "react-icons/md";
 import { BiSolidTrash } from "react-icons/bi";
+import { bgColors } from "@/CustomStyle";
+import { textColors } from "@/CustomStyle";
 
 const todos = [
   {
+    id: 1,
     type: "Business",
     title: "Finish the task on the board",
     description:
@@ -12,7 +15,8 @@ const todos = [
     isCompleted: false,
   },
   {
-    type: "Business",
+    id: 2,
+    type: "Personal",
     title: "Finish the task on the board",
     description:
       "Remember to finish the task on the board. After finishing give for evaluation Matt.",
@@ -20,7 +24,8 @@ const todos = [
     isCompleted: false,
   },
   {
-    type: "Business",
+    id: 3,
+    type: "Home",
     title: "Finish the task on the board",
     description:
       "Remember to finish the task on the board. After finishing give for evaluation Matt.",
@@ -32,28 +37,48 @@ const todos = [
 const Cards = () => {
   return (
     <div className=" flex gap-4 w-[77%] m-auto mt-8 flex-wrap">
-      {todos.map((todo) => (
-        <div className=" bg-white h-[12rem] w-[32%] p-4 rounded-lg shadow-md relative">
-          <div className="flex items-center justify-between">
-            <p className="text-xs bg-purple-400 text-purple-950 p-1 px-2 rounded-full">
-              {todo.type}
-            </p>
+      {todos.map((todo) => {
+        const backgroundColors =
+          todo.type.toLowerCase() === "business"
+            ? bgColors.primary
+            : todo.type.toLowerCase() === "home"
+            ? bgColors.secondary
+            : bgColors.tertiary;
 
-            <div className="flex items-center gap-4">
-              <input type="checkbox" />
-              <MdModeEdit />
-              <BiSolidTrash />
+        const textColor =
+          todo.type.toLowerCase() === "business"
+            ? textColors.primary
+            : todo.type.toLowerCase() === "home"
+            ? textColors.secondary
+            : textColors.tertiary;
+        return (
+          <div
+            key={todo.id}
+            className=" bg-white h-[12rem] w-[32%] p-4 rounded-lg shadow-md relative"
+          >
+            <div className="flex items-center justify-between">
+              <p
+                className={`text-xs p-1 px-2 rounded-full ${backgroundColors} ${textColor} `}
+              >
+                {todo.type}
+              </p>
+
+              <div className="flex items-center gap-4">
+                <input type="checkbox" />
+                <MdModeEdit />
+                <BiSolidTrash />
+              </div>
             </div>
+            <div className="mt-4">
+              <p className="text-base font-semibold">{todo.title}</p>
+              <p className="mt-2 text-xs">{todo.description}</p>
+            </div>
+            <p className="text-xs text-slate-400 absolute top-[82%] left-[73%]">
+              {todo.date}
+            </p>
           </div>
-          <div className="mt-4">
-            <p className="text-base font-semibold">{todo.title}</p>
-            <p className="mt-2 text-xs">{todo.description}</p>
-          </div>
-          <p className="text-xs text-slate-400 absolute top-[82%] left-[73%]">
-            {todo.date}
-          </p>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };
