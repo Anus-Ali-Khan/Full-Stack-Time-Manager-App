@@ -3,7 +3,7 @@ import { CiSearch } from "react-icons/ci";
 
 const Navbar = () => {
   return (
-    <div className="h-[4rem] w-full bg-white rounded-t-2xl shadow-md flex items-center justify-center gap-4 ">
+    <div className="h-[4rem] w-full bg-white rounded-t-2xl shadow-md flex items-center justify-center gap-4 sticky">
       <div className="flex items-center w-[70%] gap-2 bg-gray-200 h-[2rem] p-2  rounded-md">
         <CiSearch />
         <input
