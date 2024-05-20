@@ -38,16 +38,16 @@ import Loading from "./Loading";
 //   },
 // ];
 
-const Cards = () => {
-  const [todos, setTodos] = useState([]);
+const Cards = ({ todos, getData }) => {
+  // const [todos, setTodos] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const getData = async () => {
-    const api = new ApiService();
-    const data = await api.get("/api/v1/users");
-    setTodos(data);
-    console.log(data);
-  };
+  // const getData = async () => {
+  //   const api = new ApiService();
+  //   const data = await api.get("/api/v1/users");
+  //   setTodos(data);
+  //   console.log(data);
+  // };
 
   useEffect(() => {
     setIsLoading(true);
@@ -56,22 +56,33 @@ const Cards = () => {
     });
   }, []);
 
+  const handleDelete = async (id) => {
+    const api = new ApiService();
+    const deleteTodo = await api.delete(`/api/v1/users/${id}`);
+    getData();
+  };
+
   return (
-    <div className=" flex gap-4 w-[77%] m-auto mt-8 flex-wrap mb-8 ">
+    <div className=" flex gap-4 w-[80%] m-auto mt-8 flex-wrap mb-8 ">
       {isLoading ? (
         <Loading />
       ) : (
         todos.map((todo) => (
-          <div className=" bg-white h-[12rem] w-[32%] p-4 rounded-lg shadow-md relative ">
+          <div
+            className=" bg-white h-[12rem] w-[32%] p-4 rounded-lg shadow-md relative "
+            key={todo.id}
+          >
             <div className="flex items-center justify-between">
-              <p className="text-xs bg-purple-400 text-purple-950 p-1 px-2 rounded-full">
+              <p
+                className={` text-xs bg-purple-400 text-purple-950 p-1 px-2 rounded-full`}
+              >
                 {todo.taskType}
               </p>
 
               <div className="flex items-center gap-4">
                 <input type="checkbox" />
                 <MdModeEdit />
-                <BiSolidTrash />
+                <BiSolidTrash onClick={() => handleDelete(todo.id)} />
               </div>
             </div>
             <div className="mt-4">
