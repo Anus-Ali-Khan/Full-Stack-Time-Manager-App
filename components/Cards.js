@@ -59,12 +59,12 @@ const Cards = ({ todos, getData }) => {
   const handleDelete = async (id) => {
     const api = new ApiService();
     const deleteTodo = await api.delete(`/api/v1/users/${id}`);
-    getData();
+    await getData();
   };
 
   return (
     <div className=" flex gap-4 w-[80%] m-auto mt-8 flex-wrap mb-8 ">
-      {isLoading ? (
+      {isLoading && todos.length === 0 ? (
         <Loading />
       ) : (
         todos.map((todo) => (
@@ -74,7 +74,7 @@ const Cards = ({ todos, getData }) => {
           >
             <div className="flex items-center justify-between">
               <p
-                className={` text-xs bg-purple-400 text-purple-950 p-1 px-2 rounded-full`}
+                className={`text-xs bg-purple-400 text-purple-950 p-1 px-2 rounded-full`}
               >
                 {todo.taskType}
               </p>

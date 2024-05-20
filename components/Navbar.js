@@ -12,6 +12,7 @@ const Navbar = ({ getData }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const api = new ApiService();
     const data = await api.post("/api/v1/users", {
       title: title,
@@ -19,13 +20,20 @@ const Navbar = ({ getData }) => {
       taskType: taskType,
       dueDate: dueDate,
     });
-    getData();
+    await getData();
     console.log(data);
+    setTitle("");
+    setDescription("");
+    setTaskType("");
+    setDueDate("");
   };
 
   return (
-    <form className="h-fit p-2 w-full bg-white rounded-t-2xl shadow-md flex items-center justify-center gap-6 sticky">
-      <div className="flex gap-8 py-2 " onSubmit={handleSubmit}>
+    <form
+      className="h-fit p-2 w-full bg-white rounded-t-2xl shadow-md flex items-center justify-center gap-6 sticky"
+      onSubmit={handleSubmit}
+    >
+      <div className="flex gap-8 py-2 ">
         {/* <CiSearch /> */}
         <div>
           <label className="text-sm font-semibold">Todo Title:</label>
@@ -60,7 +68,7 @@ const Navbar = ({ getData }) => {
         <div>
           <label className="text-sm font-semibold">Due Date:</label>
           <input
-            type="text"
+            type="date"
             placeholder="Add due date"
             className="bg-gray-200 placeholder:text-black outline-none  w-full  placeholder:text-sm flex items-center  gap-2  h-[2rem] p-2  rounded-md"
             value={dueDate}

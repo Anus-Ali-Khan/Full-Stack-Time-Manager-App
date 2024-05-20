@@ -13,7 +13,7 @@ const Home = () => {
     const api = new ApiService();
     const data = await api.get("/api/v1/users");
     setTodos(data);
-    // console.log(data);
+    console.log(data);
   };
 
   return (
