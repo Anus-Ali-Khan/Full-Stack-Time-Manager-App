@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { MdModeEdit } from "react-icons/md";
 import { BiSolidTrash } from "react-icons/bi";
 import ApiService from "@/apiService";
@@ -39,18 +39,10 @@ import { bgColors, textColors } from "./CustomStyle";
 //   },
 // ];
 
-const Cards = ({ todos, getData }) => {
-  // const [todos, setTodos] = useState([]);
+const Cards = ({ todos, getData, activeTab }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedId, setSelectedId] = useState("");
   const [updateTodos, setUpdateTodos] = useState({});
-
-  // const getData = async () => {
-  //   const api = new ApiService();
-  //   const data = await api.get("/api/v1/users");
-  //   setTodos(data);
-  //   console.log(data);
-  // };
 
   useEffect(() => {
     setIsLoading(true);
@@ -65,7 +57,7 @@ const Cards = ({ todos, getData }) => {
     await getData();
   };
 
-  const handleEdit = async (todo) => {
+  const handleEdit = (todo) => {
     setSelectedId(todo.id);
     setUpdateTodos(todo);
   };
@@ -80,12 +72,24 @@ const Cards = ({ todos, getData }) => {
     await getData();
   };
 
+  const filteredTodoList = useMemo(() => {
+    if (activeTab === "all") {
+      return todos;
+    } else {
+      return todos.filter((filteredtodo) =>
+        filteredtodo.taskType.toLowerCase().includes(activeTab)
+      );
+    }
+  }, [activeTab, todos]);
+
+  const handleCheck = (isCompleted) => {};
+
   return (
     <div className=" flex gap-4 w-[80%] m-auto mt-8 flex-wrap mb-8 ">
       {isLoading && todos.length === 0 ? (
         <Loading />
       ) : (
-        todos.map((todo) => (
+        filteredTodoList.map((todo) => (
           <div
             className=" bg-white h-[12rem] w-[32%] p-4 rounded-lg shadow-md relative "
             key={todo.id}
@@ -98,19 +102,22 @@ const Cards = ({ todos, getData }) => {
                     : todo.taskType.toLowerCase() === "home"
                     ? bgColors.secondary
                     : bgColors.tertiary
-                } text-xs ${
+                }  ${
                   todo.taskType.toLowerCase() === "business"
                     ? textColors.primary
                     : todo.taskType.toLowerCase() === "home"
                     ? textColors.secondary
                     : textColors.tertiary
-                }  p-1 px-2 rounded-full`}
+                }  p-1 px-2 rounded-full text-xs`}
               >
                 {todo.taskType}
               </p>
 
               <div className="flex items-center gap-4">
-                <input type="checkbox" />
+                <input
+                  type="checkbox"
+                  onClick={() => handleCheck(todo.isCompleted)}
+                />
                 <MdModeEdit
                   onClick={() => handleEdit(todo)}
                   className="cursor-pointer"
@@ -128,7 +135,10 @@ const Cards = ({ todos, getData }) => {
                     type="text"
                     value={updateTodos.title}
                     onChange={(e) =>
-                      setUpdateTodos({ ...updateTodos, title: e.target.value })
+                      setUpdateTodos({
+                        ...updateTodos,
+                        title: e.target.value,
+                      })
                     }
                     className="px-2"
                   />
