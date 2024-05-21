@@ -12,7 +12,6 @@ const Navbar = ({ getData }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const api = new ApiService();
     const data = await api.post("/api/v1/users", {
       title: title,

@@ -21,7 +21,7 @@ const Home = () => {
       <div className="h-[90%] w-[80%] bg-gray-200 rounded-2xl overflow-y-scroll relative">
         <Navbar getData={getData} />
         <TabsSection />
-        <Cards todos={todos} getData={getData} />
+        <Cards todos={todos} setTodos={setTodos} getData={getData} />
       </div>
     </div>
   );

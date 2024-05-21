@@ -5,6 +5,8 @@ import { MdModeEdit } from "react-icons/md";
 import { BiSolidTrash } from "react-icons/bi";
 import ApiService from "@/apiService";
 import Loading from "./Loading";
+import { MdDownloadDone } from "react-icons/md";
+
 // import { bgColors } from "@/CustomStyle";
 // import { textColors } from "@/CustomStyle";
 
@@ -41,6 +43,8 @@ import Loading from "./Loading";
 const Cards = ({ todos, getData }) => {
   // const [todos, setTodos] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedId, setSelectedId] = useState("");
+  const [updateTodos, setUpdateTodos] = useState({});
 
   // const getData = async () => {
   //   const api = new ApiService();
@@ -59,6 +63,21 @@ const Cards = ({ todos, getData }) => {
   const handleDelete = async (id) => {
     const api = new ApiService();
     const deleteTodo = await api.delete(`/api/v1/users/${id}`);
+    await getData();
+  };
+
+  const handleEdit = async (todo) => {
+    setSelectedId(todo.id);
+    setUpdateTodos(todo);
+  };
+
+  const handleDoneEditing = async (id) => {
+    const api = new ApiService();
+    const editTodo = await api.put(`/api/v1/users/${id}`, {
+      title: updateTodos.title,
+      description: updateTodos.description,
+    });
+    setSelectedId("");
     await getData();
   };
 
@@ -81,12 +100,36 @@ const Cards = ({ todos, getData }) => {
 
               <div className="flex items-center gap-4">
                 <input type="checkbox" />
-                <MdModeEdit />
-                <BiSolidTrash onClick={() => handleDelete(todo.id)} />
+                <MdModeEdit
+                  onClick={() => handleEdit(todo)}
+                  className="cursor-pointer"
+                />
+                <BiSolidTrash
+                  onClick={() => handleDelete(todo.id)}
+                  className="cursor-pointer"
+                />
               </div>
             </div>
             <div className="mt-4">
-              <p className="text-base font-semibold">{todo.title}</p>
+              {todo.id === selectedId ? (
+                <div className="flex border w-fit rounded-sm border-black items-center">
+                  <input
+                    type="text"
+                    value={updateTodos.title}
+                    onChange={(e) =>
+                      setUpdateTodos({ ...updateTodos, title: e.target.value })
+                    }
+                    className="px-2"
+                  />
+                  <MdDownloadDone
+                    size={20}
+                    className="text-green-600 cursor-pointer"
+                    onClick={() => handleDoneEditing(todo.id)}
+                  />
+                </div>
+              ) : (
+                <p className="text-base font-semibold">{todo.title}</p>
+              )}
               <p className="mt-2 text-xs">{todo.description}</p>
             </div>
             <p className="text-xs text-slate-400 absolute top-[82%] left-[73%]">
