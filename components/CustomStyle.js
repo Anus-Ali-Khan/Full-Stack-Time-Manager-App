@@ -9,7 +9,7 @@ export const bgColors = {
 export const textColors = {
   primary: "text-purple-950",
 
-  secondary: "text-green-950",
+  secondary: "text-green-800",
 
-  tertiary: "text-orange-950",
+  tertiary: "text-orange-800",
 };

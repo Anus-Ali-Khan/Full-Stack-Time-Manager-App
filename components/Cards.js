@@ -6,8 +6,7 @@ import { BiSolidTrash } from "react-icons/bi";
 import ApiService from "@/apiService";
 import Loading from "./Loading";
 import { MdDownloadDone } from "react-icons/md";
-
-// import { bgColors } from "@/CustomStyle";
+import { bgColors, textColors } from "./CustomStyle";
 // import { textColors } from "@/CustomStyle";
 
 // const todos = [
@@ -93,7 +92,19 @@ const Cards = ({ todos, getData }) => {
           >
             <div className="flex items-center justify-between">
               <p
-                className={`text-xs bg-purple-400 text-purple-950 p-1 px-2 rounded-full`}
+                className={`${
+                  todo.taskType.toLowerCase() === "business"
+                    ? bgColors.primary
+                    : todo.taskType.toLowerCase() === "home"
+                    ? bgColors.secondary
+                    : bgColors.tertiary
+                } text-xs ${
+                  todo.taskType.toLowerCase() === "business"
+                    ? textColors.primary
+                    : todo.taskType.toLowerCase() === "home"
+                    ? textColors.secondary
+                    : textColors.tertiary
+                }  p-1 px-2 rounded-full`}
               >
                 {todo.taskType}
               </p>
@@ -130,7 +141,28 @@ const Cards = ({ todos, getData }) => {
               ) : (
                 <p className="text-base font-semibold">{todo.title}</p>
               )}
-              <p className="mt-2 text-xs">{todo.description}</p>
+              {todo.id === selectedId ? (
+                <div className="flex border w-fit rounded-sm border-black items-center">
+                  <input
+                    type="text"
+                    value={updateTodos.description}
+                    onChange={(e) =>
+                      setUpdateTodos({
+                        ...updateTodos,
+                        description: e.target.value,
+                      })
+                    }
+                    className="px-2"
+                  />
+                  <MdDownloadDone
+                    size={20}
+                    className="text-green-600 cursor-pointer"
+                    onClick={() => handleDoneEditing(todo.id)}
+                  />
+                </div>
+              ) : (
+                <p className="mt-2 text-xs">{todo.description}</p>
+              )}
             </div>
             <p className="text-xs text-slate-400 absolute top-[82%] left-[73%]">
               {todo.dueDate}
