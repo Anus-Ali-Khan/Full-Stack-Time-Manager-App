@@ -39,10 +39,10 @@ import { bgColors, textColors } from "./CustomStyle";
 //   },
 // ];
 
-const Cards = ({ todos, getData, activeTab }) => {
+const Cards = ({ todos, getData, activeTab, setTodos }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedId, setSelectedId] = useState("");
-  const [updateTodos, setUpdateTodos] = useState({});
+  const [updateTodo, setUpdateTodo] = useState({});
 
   useEffect(() => {
     setIsLoading(true);
@@ -59,14 +59,14 @@ const Cards = ({ todos, getData, activeTab }) => {
 
   const handleEdit = (todo) => {
     setSelectedId(todo.id);
-    setUpdateTodos(todo);
+    setUpdateTodo(todo);
   };
 
   const handleDoneEditing = async (id) => {
     const api = new ApiService();
     const editTodo = await api.put(`/api/v1/users/${id}`, {
-      title: updateTodos.title,
-      description: updateTodos.description,
+      title: updateTodo.title,
+      description: updateTodo.description,
     });
     setSelectedId("");
     await getData();
@@ -82,7 +82,23 @@ const Cards = ({ todos, getData, activeTab }) => {
     }
   }, [activeTab, todos]);
 
-  const handleCheck = (isCompleted) => {};
+  // Manual logic of updating our database array without api
+  const handleCheck = (todo) => {
+    const updatedTodoList = todos.map((item) => {
+      if (item.id === todo.id) {
+        return {
+          ...item,
+          completed: !item.completed,
+        };
+      } else {
+        return item;
+      }
+    });
+
+    localStorage.setItem("todos", JSON.stringify(updatedTodoList));
+    setTodos(updatedTodoList);
+    console.log(updatedTodoList);
+  };
 
   return (
     <div className=" flex gap-4 w-[80%] m-auto mt-8 flex-wrap mb-8 ">
@@ -116,8 +132,10 @@ const Cards = ({ todos, getData, activeTab }) => {
               <div className="flex items-center gap-4">
                 <input
                   type="checkbox"
-                  onClick={() => handleCheck(todo.isCompleted)}
+                  checked={todo.completed}
+                  onClick={() => handleCheck(todo)}
                 />
+
                 <MdModeEdit
                   onClick={() => handleEdit(todo)}
                   className="cursor-pointer"
@@ -133,10 +151,10 @@ const Cards = ({ todos, getData, activeTab }) => {
                 <div className="flex border w-fit rounded-sm border-black items-center">
                   <input
                     type="text"
-                    value={updateTodos.title}
+                    value={updateTodo.title}
                     onChange={(e) =>
-                      setUpdateTodos({
-                        ...updateTodos,
+                      setUpdateTodo({
+                        ...updateTodo,
                         title: e.target.value,
                       })
                     }
@@ -155,10 +173,10 @@ const Cards = ({ todos, getData, activeTab }) => {
                 <div className="flex border w-fit rounded-sm border-black items-center">
                   <input
                     type="text"
-                    value={updateTodos.description}
+                    value={updateTodo.description}
                     onChange={(e) =>
-                      setUpdateTodos({
-                        ...updateTodos,
+                      setUpdateTodo({
+                        ...updateTodo,
                         description: e.target.value,
                       })
                     }
