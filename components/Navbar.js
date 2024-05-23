@@ -2,7 +2,7 @@
 
 import ApiService from "@/apiService";
 import React, { useState } from "react";
-import { CiSearch } from "react-icons/ci";
+// import { CiSearch } from "react-icons/ci";
 
 const Navbar = ({ getData }) => {
   const [title, setTitle] = useState("");
@@ -56,13 +56,27 @@ const Navbar = ({ getData }) => {
         </div>
         <div>
           <label className="text-sm font-semibold">Task type:</label>
-          <input
+          {/* <input
             type="text"
             placeholder="Add task type"
             className="bg-gray-200 placeholder:text-black outline-none  w-full  placeholder:text-sm flex items-center  gap-2  h-[2rem] p-2  rounded-md"
             value={taskType}
             onChange={(e) => setTaskType(e.target.value)}
-          />
+          /> */}
+          <select
+            type="text"
+            placeholder="Add task type"
+            className="bg-gray-200 placeholder:text-black outline-none  w-full  placeholder:text-sm flex items-center  gap-2  h-[2rem] p-2  rounded-md"
+            value={taskType}
+            onChange={(e) => setTaskType(e.target.value)}
+          >
+            <option disabled selected>
+              Select task type
+            </option>
+            <option value="home">Home</option>
+            <option value="business">Business</option>
+            <option value="personal">Personal</option>
+          </select>
         </div>
         <div>
           <label className="text-sm font-semibold">Due Date:</label>

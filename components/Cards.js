@@ -39,7 +39,7 @@ import { bgColors, textColors } from "./CustomStyle";
 //   },
 // ];
 
-const Cards = ({ todos, getData, activeTab, setTodos }) => {
+const Cards = ({ todos, getData, activeTab }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedId, setSelectedId] = useState("");
   const [updateTodo, setUpdateTodo] = useState({});
@@ -142,7 +142,7 @@ const Cards = ({ todos, getData, activeTab, setTodos }) => {
                 <input
                   type="checkbox"
                   checked={todo.completed}
-                  onClick={() => handleCheck(todo)}
+                  onChange={() => handleCheck(todo)}
                 />
 
                 <MdModeEdit
