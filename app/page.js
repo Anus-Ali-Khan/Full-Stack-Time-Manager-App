@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import Navbar from "@/components/Navbar";
 import TabsSection from "@/components/TabsSection";
 import Cards from "@/components/Cards";
@@ -14,7 +14,14 @@ const Home = () => {
     const api = new ApiService();
     const data = await api.get("/api/v1/users");
     setTodos(data);
-    // console.log(data);
+    console.log(data);
+  };
+
+  const handleCompletedTask = () => {
+    const updateTodoList = todos.filter(
+      (filteredCompletedTodo) => filteredCompletedTodo.completed === true
+    );
+    setTodos(updateTodoList);
   };
 
   return (
@@ -25,6 +32,7 @@ const Home = () => {
           todos={todos}
           activeTab={activeTab}
           setActiveTab={setActiveTab}
+          handleCompletedTask={handleCompletedTask}
         />
         <Cards
           todos={todos}

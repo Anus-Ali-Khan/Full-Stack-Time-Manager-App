@@ -1,6 +1,4 @@
-import React from "react";
-
-const TabsSection = ({ activeTab, setActiveTab }) => {
+const TabsSection = ({ activeTab, setActiveTab, handleCompletedTask }) => {
   const handleTab = (tab) => {
     setActiveTab(tab);
   };
@@ -43,7 +41,7 @@ const TabsSection = ({ activeTab, setActiveTab }) => {
           </p>
         </div>
         <div className="flex items-center mt-6 gap-2">
-          <input type="checkbox" />
+          <input type="checkbox" onClick={handleCompletedTask} />
           <label className="text-xs  font-medium">
             Show only completed notes
           </label>

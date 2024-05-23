@@ -83,21 +83,30 @@ const Cards = ({ todos, getData, activeTab, setTodos }) => {
   }, [activeTab, todos]);
 
   // Manual logic of updating our database array without api
-  const handleCheck = (todo) => {
-    const updatedTodoList = todos.map((item) => {
-      if (item.id === todo.id) {
-        return {
-          ...item,
-          completed: !item.completed,
-        };
-      } else {
-        return item;
-      }
-    });
+  // const handleCheck = (todo) => {
+  //   const updatedTodoList = todos.map((item) => {
+  //     if (item.id === todo.id) {
+  //       return {
+  //         ...item,
+  //         completed: !item.completed,
+  //       };
+  //     } else {
+  //       return item;
+  //     }
+  //   });
 
-    localStorage.setItem("todos", JSON.stringify(updatedTodoList));
-    setTodos(updatedTodoList);
-    console.log(updatedTodoList);
+  //   localStorage.setItem("todos", JSON.stringify(updatedTodoList));
+  //   setTodos(updatedTodoList);
+  //   console.log(updatedTodoList);
+  // };
+
+  const handleCheck = async (todo) => {
+    const api = new ApiService();
+    const data = await api.put(
+      `http://localhost:8080/api/v1/users/taskCompletion/${todo.id}`,
+      { completed: !todo.completed }
+    );
+    await getData();
   };
 
   return (
