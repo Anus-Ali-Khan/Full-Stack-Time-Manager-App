@@ -110,9 +110,13 @@ const Cards = ({ todos, getData, activeTab }) => {
   };
 
   return (
-    <div className=" flex gap-4 w-[80%] m-auto mt-8 flex-wrap mb-8 ">
+    <div className=" flex gap-4 w-[80%] h-[80%] m-auto mt-8 flex-wrap mb-8 ">
       {isLoading && todos.length === 0 ? (
         <Loading />
+      ) : filteredTodoList.length === 0 ? (
+        <div className="flex items-center justify-center h-[50%] w-full">
+          <p className="text-center font-medium text-xl">No remaining task</p>
+        </div>
       ) : (
         filteredTodoList.map((todo) => (
           <div
